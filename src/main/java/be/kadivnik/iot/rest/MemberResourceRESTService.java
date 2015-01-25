@@ -42,7 +42,7 @@ import javax.ws.rs.core.Response;
 
 import be.kadivnik.iot.data.MemberDAO;
 import be.kadivnik.iot.model.Member;
-import be.kadivnik.iot.service.MemberRegistrationService;
+import be.kadivnik.iot.service.MemberService;
 
 /**
  * JAX-RS Example
@@ -63,7 +63,7 @@ public class MemberResourceRESTService {
     private MemberDAO repository;
 
     @Inject
-    MemberRegistrationService registration;
+    MemberService registration;
  
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -97,7 +97,7 @@ public class MemberResourceRESTService {
             // Validates member using bean validation
             validateMember(member);
 
-            registration.register(member);
+            registration.create(member);
 
             // Create an "ok" response
             builder = Response.ok();
@@ -118,7 +118,10 @@ public class MemberResourceRESTService {
 
         return builder.build();
     }
-
+    
+//    @POST
+//    @Consumes(MediaType.APPLICATION_JSON)
+    
     /**
      * <p>
      * Validates the given Member variable and throws validation exceptions based on the type of error. If the error is standard

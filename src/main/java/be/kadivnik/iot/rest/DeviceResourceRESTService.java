@@ -25,7 +25,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import be.kadivnik.iot.model.Device;
-import be.kadivnik.iot.service.DeviceRegistrationService;
 import be.kadivnik.iot.service.DeviceService;
 
 @Path("/devices")
@@ -39,7 +38,7 @@ public class DeviceResourceRESTService {
     private Validator validator;
 
     @Inject
-    private DeviceRegistrationService registration;
+    private DeviceService deviceService;
     
     @Inject
     private DeviceService repository;
@@ -71,8 +70,7 @@ public class DeviceResourceRESTService {
         try {
             // Validates member using bean validation
             validateDevice(device);
-
-            registration.register(device);
+            deviceService.create(device);
 
             // Create an "ok" response
             builder = Response.ok();

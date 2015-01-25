@@ -36,7 +36,7 @@ public class MqttSensorStateMessageService implements MqttMessageService {
 		log.log(Level.INFO, "Checking the message correctness");
 		if (hasMessageCorrectNumberOfParts(message)) {
 			log.log(Level.FINE, "Sensorstate message has the correct number of parts");
-			sensorStateService.createSensorState(message);
+			sensorStateService.handleMessage(message);
 		}
 	}
 

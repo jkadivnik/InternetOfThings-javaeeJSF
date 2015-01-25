@@ -1,4 +1,4 @@
-package be.kadivnik.iot.data;
+package be.kadivnik.iot.data.producer;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import be.kadivnik.iot.data.SensorStateDAO;
 import be.kadivnik.iot.model.SensorState;
 
 @RequestScoped
@@ -29,7 +30,11 @@ public class SensorStateListProducer {
 	public void onSensorStateChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final SensorState sensorState) {
 		retrieveAllSensorStatesOrderedByNameAndDevice();
 	}
-	
+
+	public void onSensorStateChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final List<SensorState> sensorStates) {
+		retrieveAllSensorStatesOrderedByNameAndDevice();
+	}
+
 	@PostConstruct
 	private void retrieveAllSensorStatesOrderedByNameAndDevice() {
 		sensorStates = sensorStateRepository.findAllOrderedByDeviceAndName();

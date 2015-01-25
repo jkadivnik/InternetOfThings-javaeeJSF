@@ -27,7 +27,7 @@ import javax.ws.rs.core.Response;
 import be.kadivnik.iot.data.SensorStateDAO;
 import be.kadivnik.iot.model.Device;
 import be.kadivnik.iot.model.SensorState;
-import be.kadivnik.iot.service.SensorStateRegistrationService;
+import be.kadivnik.iot.service.SensorStateService;
 
 @Path("/sensorstates")
 @RequestScoped
@@ -35,13 +35,10 @@ public class SensorStateResourceRESTService {
 
     @Inject
     private Logger log;
-
     @Inject
     private Validator validator;
-
     @Inject
-    private SensorStateRegistrationService registration;
-    
+    private SensorStateService sensorStateService;
     @Inject
     private SensorStateDAO repository;
 
@@ -73,7 +70,7 @@ public class SensorStateResourceRESTService {
             // Validates member using bean validation
             validateSensorState(sensorState);
 
-            registration.register(sensorState);
+            sensorStateService.create(sensorState);
 
             // Create an "ok" response
             builder = Response.ok();

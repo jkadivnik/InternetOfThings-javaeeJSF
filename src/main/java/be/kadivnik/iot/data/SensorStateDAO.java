@@ -13,13 +13,13 @@ import be.kadivnik.iot.model.Device;
 import be.kadivnik.iot.model.SensorState;
 
 @ApplicationScoped
-public class SensorStateDAO {
+public class SensorStateDAO extends DataAccessDAO<SensorState> {
 
     @Inject
     private EntityManager em;
 
     public SensorState findById(Long id) {
-        return em.find(SensorState.class, id);
+        return find(id);
     }
 
     public SensorState findByDevice(Device device) {

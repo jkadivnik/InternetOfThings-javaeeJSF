@@ -35,4 +35,7 @@ public abstract class BaseController {
 		this.facesContext = facesContext;
 	}
 	
+	abstract void create();
+	abstract void update();
+	abstract void delete();
 }

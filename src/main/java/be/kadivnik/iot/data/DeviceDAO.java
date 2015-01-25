@@ -12,23 +12,19 @@ import javax.persistence.criteria.Root;
 import be.kadivnik.iot.model.Device;
 
 @ApplicationScoped
-public class DeviceDAO {
+public class DeviceDAO extends DataAccessDAO<Device> {
 
     @Inject
     private EntityManager em;
 
-    public Device findById(Long id) {
-        return em.find(Device.class, id);
-    }
-
     public Device findByName(String name) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Device> criteria = cb.createQuery(Device.class);
-        Root<Device> device = criteria.from(Device.class);
+        Root<Device> rootDevice = criteria.from(Device.class);
         // Swap criteria statements if you would like to try out type-safe criteria queries, a new
         // feature in JPA 2.0
         // criteria.select(member).where(cb.equal(member.get(Member_.name), email));
-        criteria.select(device).where(cb.equal(device.get("name"), name));
+        criteria.select(rootDevice).where(cb.equal(rootDevice.get("name"), name));
         return em.createQuery(criteria).getSingleResult();
     }
 

@@ -25,7 +25,7 @@ import javax.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import be.kadivnik.iot.model.Member;
-import be.kadivnik.iot.service.MemberRegistrationService;
+import be.kadivnik.iot.service.MemberService;
 import be.kadivnik.iot.util.Resources;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -39,7 +39,7 @@ public class MemberRegistrationTest {
     @Deployment
     public static Archive<?> createTestArchive() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
-                .addClasses(Member.class, MemberRegistrationService.class, Resources.class)
+                .addClasses(Member.class, MemberService.class, Resources.class)
                 .addAsResource("META-INF/test-persistence.xml", "META-INF/persistence.xml")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 // Deploy our test datasource
@@ -47,7 +47,7 @@ public class MemberRegistrationTest {
     }
 
     @Inject
-    MemberRegistrationService memberRegistration;
+    MemberService memberRegistration;
 
     @Inject
     Logger log;
@@ -58,7 +58,7 @@ public class MemberRegistrationTest {
         newMember.setName("Jane Doe");
         newMember.setEmail("jane@mailinator.com");
         newMember.setPhoneNumber("2125551234");
-        memberRegistration.register(newMember);
+        memberRegistration.create(newMember);
         assertNotNull(newMember.getId());
         log.info(newMember.getName() + " was persisted with id " + newMember.getId());
     }

@@ -1,4 +1,4 @@
-package be.kadivnik.iot.data;
+package be.kadivnik.iot.data.producer;
 
 import java.util.List;
 
@@ -10,6 +10,7 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import be.kadivnik.iot.data.DeviceDAO;
 import be.kadivnik.iot.model.Device;
 
 @RequestScoped
@@ -29,7 +30,11 @@ public class DeviceListProducer {
     public void onDeviceListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final Device device) {
         retrieveAllDevicesOrderedByName();
     }
-    
+
+    public void onDeviceListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final List<Device> devices) {
+        retrieveAllDevicesOrderedByName();
+    }
+
     @PostConstruct
     public void retrieveAllDevicesOrderedByName() {
         devices = deviceRepository.findAllOrderedByName();

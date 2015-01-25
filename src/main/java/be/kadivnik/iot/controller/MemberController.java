@@ -24,7 +24,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import be.kadivnik.iot.model.Member;
-import be.kadivnik.iot.service.MemberRegistrationService;
+import be.kadivnik.iot.service.MemberService;
 
 // The @Model stereotype is a convenience mechanism to make this a request-scoped bean that has an
 // EL name
@@ -34,20 +34,35 @@ import be.kadivnik.iot.service.MemberRegistrationService;
 public class MemberController extends BaseController {
 
     @Inject
-    private MemberRegistrationService memberRegistration;
+    private MemberService memberService;
 
     @Produces
     @Named
     private Member newMember;
 
+    @Produces
+    @Named
+    private Member selectedMember;
+
     @PostConstruct
+    public void initMemberController() {
+    	initNewMember();
+    	initSelectedMember();
+    }
+    
     public void initNewMember() {
         newMember = new Member();
     }
 
-    public void register() throws Exception {
+    public void initSelectedMember() {
+        selectedMember = new Member();
+    }
+
+
+    @Override
+    public void create() {
         try {
-            memberRegistration.register(newMember);
+            memberService.create(newMember);
             FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registered!", "Registration successful");
             getFacesContext().addMessage(null, m);
             initNewMember();
@@ -57,4 +72,32 @@ public class MemberController extends BaseController {
             getFacesContext().addMessage(null, m);
         }
     }
+
+	@Override
+	public void update() {
+        try {
+            memberService.create(selectedMember);
+            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "Updated!", "Update successful");
+            getFacesContext().addMessage(null, m);
+            initSelectedMember();
+        } catch (Exception e) {
+            String errorMessage = getRootErrorMessage(e);
+            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Update unsuccessful");
+            getFacesContext().addMessage(null, m);
+        }
+	}
+
+	@Override
+	void delete() {
+        try {
+            memberService.create(selectedMember);
+            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "Deleted!", "Delete successful");
+            getFacesContext().addMessage(null, m);
+            initSelectedMember();
+        } catch (Exception e) {
+            String errorMessage = getRootErrorMessage(e);
+            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Delete unsuccessful");
+            getFacesContext().addMessage(null, m);
+        }
+	}
 }

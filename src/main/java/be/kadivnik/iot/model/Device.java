@@ -48,4 +48,8 @@ public class Device implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public List<SensorState> attachedSensors() {
+		return sensorStates;
+	}
 }

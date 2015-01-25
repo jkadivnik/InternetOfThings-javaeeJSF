@@ -16,30 +16,46 @@
  */
 package be.kadivnik.iot.service;
 
-import be.kadivnik.iot.model.Member;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import java.util.logging.Logger;
+
+import be.kadivnik.iot.data.MemberDAO;
+import be.kadivnik.iot.model.Member;
 
 // The @Stateless annotation eliminates the need for manual transaction demarcation
 @Stateless
-public class MemberRegistrationService {
+public class MemberService implements DataAccessService<Member> {
 
     @Inject
     private Logger log;
-
     @Inject
-    private EntityManager em;
-
+    private MemberDAO memberDAO;
     @Inject
     private Event<Member> memberEventSrc;
 
-    public void register(Member member) throws Exception {
-        log.info("Registering " + member.getName());
-        em.persist(member);
+    public Member create(Member member) {
+        log.info("Creating " + member.getName());
+        Member createdMember = memberDAO.create(member);
         memberEventSrc.fire(member);
+        return createdMember;
     }
+
+	@Override
+	public Member update(Member member) {
+        log.info("Updating " + member.getName());
+		Member updatedMember = memberDAO.update(member);
+        memberEventSrc.fire(member);
+        return updatedMember;
+	}
+
+	@Override
+	public void delete(Member member) {
+        log.info("Deleting " + member.getName());
+		memberDAO.delete(member);
+        memberEventSrc.fire(member);
+		
+	}
 }

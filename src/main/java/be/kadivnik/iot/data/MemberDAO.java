@@ -27,13 +27,13 @@ import java.util.List;
 import be.kadivnik.iot.model.Member;
 
 @ApplicationScoped
-public class MemberDAO {
+public class MemberDAO extends DataAccessDAO<Member>{
 
     @Inject
     private EntityManager em;
 
     public Member findById(Long id) {
-        return em.find(Member.class, id);
+        return find(id);
     }
 
     public Member findByEmail(String email) {
